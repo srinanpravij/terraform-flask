@@ -148,13 +148,13 @@ provider "aws" {
      network_interface_id = aws_network_interface.web-server-nic.id
    }
 
-#   user_data = <<-EOF
-#                 #!/bin/bash
-#                 sudo apt update -y
-#                 sudo apt install apache2 -y
-#                 sudo systemctl start apache2
-#                 sudo bash -c 'echo your very first web server > /var/www/html/index.html'
-#                 EOF
+   user_data = <<-EOF
+                 #!/bin/bash
+				  sudo apt update -y	
+                  sudo curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64
+                  sudo chmod +x ./kind
+                  sudo mv ./kind /usr/bin/kind
+                EOF
    tags = {
      Name = "node"
   }
