@@ -14,15 +14,15 @@ terraform {
 # Provision the worker using remote-exec
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "null_resource" "example_provisioner" {
+resource "kind_deployment" "flaskapptf" {
   triggers = {
-    public_ip = 192.168.1.208
+    public_ip = "192.168.1.208"
   }
 
   connection {
     type  = "ssh"
-    host  = 192.168.1.208
-    user  = ubuntu
+    host  = "192.168.1.208"
+    user  = "ubuntu"
     port  = 22
     agent = true
   }
