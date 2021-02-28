@@ -4,26 +4,26 @@ provider "aws" {
   region  = "us-east-1"
 }
 
- # 1. Create vpc
+# 1. Create vpc
 
- resource "aws_vpc" "prod-vpc" {
+ resource "aws_vpc" "prod-vpc1" {
    cidr_block = "10.0.0.0/16"
    tags = {
      Name = "production"
-   }
+    }
  }
 
-# # 2. Create Internet Gateway
+ # 2. Create Internet Gateway
 
  resource "aws_internet_gateway" "prod-gw" {
-   vpc_id = aws_vpc.prod-vpc.id
+  vpc_id = aws_vpc.prod-vpc1.id
 
 
  }
 # 3. Create Custom Route Table
 
  resource "aws_route_table" "prod-route-table" {
-   vpc_id = aws_vpc.prod-vpc.id
+   vpc_id = aws_vpc.prod-vpc1.id
 
    route {
      cidr_block = "0.0.0.0/0"
@@ -40,10 +40,10 @@ provider "aws" {
    }
  }
 
-# 4. Create a Subnet 
+ 4. Create a Subnet 
 
  resource "aws_subnet" "subnet-1" {
-   vpc_id            = aws_vpc.prod-vpc.id
+   vpc_id            = aws_vpc.prod-vpc1.id
    cidr_block        = "10.0.1.0/24"
    availability_zone = "us-east-1a"
 
@@ -61,7 +61,7 @@ provider "aws" {
  resource "aws_security_group" "allow_web" {
    name        = "allow_web_traffic"
    description = "Allow Web inbound traffic"
-   vpc_id      = aws_vpc.prod-vpc.id
+   vpc_id      = aws_vpc.prod-vpc1.id
 
    ingress {
      description = "HTTPS"
@@ -104,11 +104,11 @@ provider "aws" {
    }
  }
 
- # 7. Create a network interface with an ip in the subnet that was created in step 4
+# 7. Create a network interface with an ip in the subnet that was created in step 4
 
  resource "aws_network_interface" "web-server-nic" {
    subnet_id       = aws_subnet.subnet-1.id
-   private_ips     = ["10.0.1.50"]
+   private_ips     = ["10.0.1.52"]
    security_groups = [aws_security_group.allow_web.id]
 
  }
@@ -117,7 +117,7 @@ provider "aws" {
  resource "aws_eip" "one" {
    vpc                       = true
    network_interface         = aws_network_interface.web-server-nic.id
-   associate_with_private_ip = "10.0.1.50"
+   associate_with_private_ip = "10.0.1.52"
    depends_on                = [aws_internet_gateway.prod-gw]
  }
 
@@ -125,7 +125,7 @@ provider "aws" {
    value = aws_eip.one.public_ip
  }
 
- # 9. Create Ubuntu server and install/enable apache2
+# 9. Create Ubuntu server and install/enable apache2
 
  resource "aws_instance" "web-server-instance" {
    ami               = "ami-03d315ad33b9d49c4"
@@ -144,7 +144,7 @@ provider "aws" {
 				 sudo ls -al
                 EOF
    tags = {
-     Name = "node"
+     Name = "tfnode"
   }
  }
 
