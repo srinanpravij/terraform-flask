@@ -4,8 +4,8 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.0.1"
     }
-   docker = {
-      source = "kreuzwerker/docker"
+    docker = {
+      source  = "kreuzwerker/docker"
       version = "2.11.0"
     }
   }
@@ -28,7 +28,7 @@ variable "cluster_ca_certificate" {
 }
 
 provider "kubernetes" {
-  host = "https://127.0.0.1:33241"
+  host        = "https://127.0.0.1:33241"
   config_path = "/home/ubuntu/.kube/config"
 }
 
