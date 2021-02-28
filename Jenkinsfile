@@ -6,7 +6,7 @@ agent any
 	CONTAINER_NAME = "tfflaskcontainer"
 	dockerImage = ''
 	PATH = "/usr/local/bin/terraform:$PATH"
-	//SECRET_FILE_ID = credentials('tfsecret')
+	SECRET_FILE_ID = credentials('cptfvarfile')
 	//ANS_HOME = tool('ansible')
 	}
 	tools {
@@ -49,6 +49,16 @@ agent any
 			}
 		}
 	}
+		stage('Terraform cluster delete and create'){
+            steps {
+                dir('tfflask'){
+				// delete previous cluster
+                sh 'kind delete cluster --name tfflask'
+                // create new cluster
+                sh 'kind create cluster --name tfflask --config kind-config.yaml'
+				}
+            }
+        }
 		stage('Terraform Init'){
             steps {
                 // Initialize terraform with all the required plugin
@@ -68,8 +78,8 @@ agent any
 				sh 'pwd'
                 script{
 					dir('tfflask'){
-						sh 'terraform apply --auto-approve'
-						//sh 'terraform apply -var-file=${SECRET_FILE_ID} --auto-approve'
+						//sh 'terraform apply --auto-approve'
+						sh 'terraform apply -var-file=${SECRET_FILE_ID} --auto-approve'
 						}
 				}
                 
