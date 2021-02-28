@@ -10,10 +10,6 @@ terraform {
     }
   }
   
-# ---------------------------------------------------------------------------------------------------------------------
-# Provision the worker using remote-exec
-# ---------------------------------------------------------------------------------------------------------------------
-
 resource "kind_deployment" "flaskapptf" {
   triggers = {
     public_ip = "192.168.1.208"
@@ -27,8 +23,7 @@ resource "kind_deployment" "flaskapptf" {
     agent = true
   }
 
- // change permissions to executable and pipe its output into a new file
-  provisioner "remote-exec" {
+ provisioner "remote-exec" {
     inline = [
 	  "pwd ",
       "mkdir testdirectory",
