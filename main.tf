@@ -10,28 +10,68 @@ terraform {
     }
   }
   
-resource "kind_deployment" "flaskapptf" {
-  triggers = {
-    public_ip = "192.168.1.208"
+resource "kubernetes_deployment" "flaskapptf" {
+  metadata {
+    name = "scalable-flaskapptf-example"
+    labels = {
+      App = "ScalableflaskappExample"
+    }
   }
 
-  connection {
-    type  = "ssh"
-    host  = "192.168.1.208"
-    user  = "ubuntu"
-    port  = 22
-    agent = true
-  }
+  spec {
+    replicas = 3
+    selector {
+      match_labels = {
+        App = "ScalableflaskappExample"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "ScalableflaskappExample"
+        }
+      }
+      spec {
+        container {
+          image = "vijaya81kp/flask-cicd"
+          name  = "example"
 
- provisioner "remote-exec" {
-    inline = [
-	  "pwd ",
-      "mkdir testdirectory",
-      "echo here in remote",
-    ]
-  }
+          port {
+            container_port = 8080
+          }
 
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "128Mi"
+            }
+          }
+        }
+      }
+    }
+  }
 }
+
+resource "kubernetes_service" "flaskapptf" {
+  metadata {
+    name = "flaskapptf-example"
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.flaskapptf.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      node_port   = 30201
+      port        = 8080
+      target_port = 8080
+    }
+
+    type = "NodePort"
+  }
 
   
   
