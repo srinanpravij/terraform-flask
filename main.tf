@@ -4,19 +4,21 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-# 1. Create vpc
+
+
+ # 1. Create vpc
 
  resource "aws_vpc" "prod-vpc1" {
    cidr_block = "10.0.0.0/16"
    tags = {
      Name = "production"
-    }
+   }
  }
 
- # 2. Create Internet Gateway
+# # 2. Create Internet Gateway
 
  resource "aws_internet_gateway" "prod-gw" {
-  vpc_id = aws_vpc.prod-vpc1.id
+   vpc_id = aws_vpc.prod-vpc1.id
 
 
  }
@@ -40,7 +42,7 @@ provider "aws" {
    }
  }
 
- 4. Create a Subnet 
+# 4. Create a Subnet 
 
  resource "aws_subnet" "subnet-1" {
    vpc_id            = aws_vpc.prod-vpc1.id
@@ -104,7 +106,7 @@ provider "aws" {
    }
  }
 
-# 7. Create a network interface with an ip in the subnet that was created in step 4
+ # 7. Create a network interface with an ip in the subnet that was created in step 4
 
  resource "aws_network_interface" "web-server-nic" {
    subnet_id       = aws_subnet.subnet-1.id
@@ -125,7 +127,7 @@ provider "aws" {
    value = aws_eip.one.public_ip
  }
 
-# 9. Create Ubuntu server and install/enable apache2
+ # 9. Create Ubuntu server and install/enable apache2
 
  resource "aws_instance" "web-server-instance" {
    ami               = "ami-03d315ad33b9d49c4"
@@ -144,7 +146,7 @@ provider "aws" {
 				 sudo ls -al
                 EOF
    tags = {
-     Name = "tfnode"
+     Name = "node"
   }
  }
 
