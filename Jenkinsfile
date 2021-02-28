@@ -6,11 +6,11 @@ agent any
 	CONTAINER_NAME = "tfflaskcontainer"
 	dockerImage = ''
 	PATH = "/usr/local/bin/terraform:$PATH"
-	SECRET_FILE_ID = credentials('tfsecret')
+	//SECRET_FILE_ID = credentials('tfsecret')
 	//ANS_HOME = tool('ansible')
 	}
 	tools {
-        terraform 'Terraform'
+        terraform 'terraform'
     }
 
 	stages{
@@ -54,7 +54,7 @@ agent any
                 // Initialize terraform with all the required plugin
 				sh 'pwd'
                 script{
-					dir('capstone'){
+						dir('tfflask'){
 						sh 'terraform init'
 						}
 				}
@@ -65,10 +65,11 @@ agent any
             steps {
                 // Initialize terraform with all the required plugin
 				sh 'env'
+				sh 'pwd'
                 script{
-					dir('capstone'){
-						//sh 'terraform apply --auto-approve'
-						sh 'terraform apply -var-file=${SECRET_FILE_ID} --auto-approve'
+					dir('tfflask'){
+						sh 'terraform apply --auto-approve'
+						//sh 'terraform apply -var-file=${SECRET_FILE_ID} --auto-approve'
 						}
 				}
                 
