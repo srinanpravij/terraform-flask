@@ -30,7 +30,7 @@ resource "null_resource" "example_provisioner" {
  // change permissions to executable and pipe its output into a new file
   provisioner "remote-exec" {
     inline = [
-	  "pwd "
+	  "pwd ",
       "mkdir testdirectory",
       "echo here in remote",
     ]
