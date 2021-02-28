@@ -37,10 +37,7 @@ provider "docker" {
 }
 
 resource "kubernetes_deployment" "flaskapptf" {
-  triggers = {
-    public_ip = "192.168.1.208"
-  }
-
+  
   connection {
     type  = "ssh"
     host  = "192.168.1.208"
