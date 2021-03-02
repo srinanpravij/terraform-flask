@@ -49,17 +49,19 @@ agent any
 			}
 		}
 	}
-		stage('Terraform cluster delete and create'){
-            steps {
-                dir('tfflask'){
-				// delete previous cluster
-                sh 'kind delete cluster --name tfflask'
-                // create new cluster
-                sh 'kind create cluster --name tfflask --config kind-config.yaml'
-				}
-            }
-        }
-		stage('Terraform Init'){
+    //stage('Terraform delete deployments,services and pods'){
+            //steps {
+               
+				// delete previous deployment
+                // sh 'kubectl delete deployment scalable-cpflask-example'
+                 //delete service
+                // sh 'kubectl delete service cpflask-example'
+			     //delete pods
+                // sh 'kubectl delete pods --all'
+				
+          // }
+      //  }
+	stage('Terraform Init'){
             steps {
                 // Initialize terraform with all the required plugin
 				sh 'pwd'
@@ -71,7 +73,7 @@ agent any
                 
             }
         }
-		stage('Terraform apply'){
+    stage('Terraform apply'){
             steps {
                 // Initialize terraform with all the required plugin
 				sh 'env'
@@ -85,25 +87,7 @@ agent any
                 
             }
         }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//stage('Deploy-Playbook'){
-// steps{
-// ansiblePlaybook credentialsId: 'capstone', disableHostKeyChecking: true, installation: 'ansible', playbook: './2020_03_DO_Boston_casestudy_part_1/ansible.yaml'
-// }
-//}
+       
+}
 }
 
-}
