@@ -1,40 +1,19 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = ">= 2.0.1"
-    }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "2.11.0"
-    }
-  }
+resource "myhost" "mine" {
+    host = var.host
 }
 
-variable "host" {
-  type = string
+resource "client_certificate" "mine2" {
+  client_certificate = var.client_certificate
 }
 
-variable "client_certificate" {
-  type = string
+resource "client_key" "mykey" {
+    client_key = var.client_key
 }
 
-variable "client_key" {
-  type = string
+resource "cluster_ca_certificate" "mycertificate" {
+    cluster_ca_certificate = var.cluster_ca_certificate
 }
 
-variable "cluster_ca_certificate" {
-  type = string
-}
-
-provider "kubernetes" {
-  host        = "https://127.0.0.1:40131"
-  config_path = "/home/ubuntu/.kube/config"
-}
-
-provider "docker" {
-  host = "tcp://localhost:2376"
-}
 
 resource "kubernetes_deployment" "cpflask" {
   metadata {
@@ -99,3 +78,4 @@ resource "kubernetes_service" "cpflask" {
     type = "NodePort"
   }
 }
+
