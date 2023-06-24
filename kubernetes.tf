@@ -11,21 +11,23 @@ terraform {
   }
 }
 
-variable "host" {
-  type = string
+resource "myhost" "mine" {
+    host = var.host
 }
 
-variable "client_certificate" {
-  type = string
+resource "client_certificate" "mine2" {
+  client_certificate = var.client_certificate
 }
 
-variable "client_key" {
-  type = string
+resource "client_key" "mykey" {
+    client_key = var.client_key
 }
 
-variable "cluster_ca_certificate" {
-  type = string
+resource "cluster_ca_certificate" "mycertificate" {
+    cluster_ca_certificate = var.cluster_ca_certificate
 }
+
+
 
 provider "kubernetes" {
   host        = "https://127.0.0.1:40131"
