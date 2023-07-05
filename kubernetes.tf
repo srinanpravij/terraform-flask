@@ -13,18 +13,22 @@ terraform {
 
 variable "host" {
   type = string
+  description = "The host url of ip of the Kubernetes Cluster"
 }
 
 variable "client_certificate" {
   type = string
+  description = "The client certificate used to authenticate with the Kubernetes Cluster"
 }
 
 variable "client_key" {
   type = string
+  description = "The client key that's presented to authenticate with the Kubernetes Cluster"
 }
 
 variable "cluster_ca_certificate" {
   type = string
+  description = "root certificate used to verify authenticity of other certificates in the certificate chain, so this is the root certificate in TLS used to authenticate with the Kubernetes Cluster"
 }
 
 provider "kubernetes" {
